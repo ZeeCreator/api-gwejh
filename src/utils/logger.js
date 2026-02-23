@@ -1,19 +1,4 @@
 const morgan = require('morgan');
-const fs = require('fs');
-const path = require('path');
-
-// Check if running in serverless environment (Vercel)
-const isServerless = process.env.VERCEL === '1' || process.env.AWS_LAMBDA_FUNCTION_NAME;
-
-// Ensure logs directory exists (only for local development)
-let logStream = null;
-if (!isServerless) {
-  const logDir = path.join(__dirname, '../../logs');
-  if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
-  }
-  logStream = fs.createWriteStream(path.join(logDir, 'access.log'), { flags: 'a' });
-}
 
 // Custom token for response time
 morgan.token('response-time', (req, res) => {
@@ -37,16 +22,10 @@ const productionFormat = ':remote-addr - :remote-user [:date[clf]] ":method :url
  * @returns {function} Morgan middleware
  */
 function getMorganMiddleware(env = 'development') {
-  if (isServerless) {
-    // In serverless, just log to console
-    return morgan(productionFormat, {
-      skip: (req, res) => req.url === '/health'
-    });
-  }
-  
+  // Always log to console (works in serverless and local)
   if (env === 'production') {
     return morgan(productionFormat, {
-      stream: logStream || process.stdout,
+      stream: process.stdout,
       skip: (req, res) => req.url === '/health'
     });
   }
@@ -57,7 +36,7 @@ function getMorganMiddleware(env = 'development') {
 }
 
 /**
- * Log error to file (or console in serverless)
+ * Log error to console
  * @param {Error} error - Error object
  * @param {object} req - Express request object
  */
@@ -70,20 +49,12 @@ function logError(error, req) {
     stack: error.stack
   };
   
-  if (isServerless) {
-    // In serverless, log to console
-    console.error('Error:', JSON.stringify(errorLog));
-  } else {
-    // Log to file locally
-    const errorLogPath = path.join(__dirname, '../../logs', 'error.log');
-    fs.appendFile(errorLogPath, JSON.stringify(errorLog) + '\n', (err) => {
-      if (err) console.error('Failed to write error log:', err);
-    });
-  }
+  // Always log to console (works in serverless and local)
+  console.error('Error:', JSON.stringify(errorLog));
 }
 
 module.exports = {
   getMorganMiddleware,
   logError,
-  logStream
+  logStream: null
 };
