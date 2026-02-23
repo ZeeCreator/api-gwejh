@@ -1,8 +1,11 @@
-// Vercel serverless function
-const app = require('../src/app').createApp();
+// Vercel serverless - don't use dotenv, use process.env directly
+const { createApp } = require('./app');
 
+const app = createApp();
+
+// Export for Vercel
 module.exports = async (req, res) => {
-  // CORS headers
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -12,6 +15,6 @@ module.exports = async (req, res) => {
     return;
   }
   
-  // Handle request
+  // Handle request with Express
   app(req, res);
 };

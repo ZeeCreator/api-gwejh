@@ -1,4 +1,7 @@
-require('dotenv').config();
+// Only load dotenv for local development
+if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
+  require('dotenv').config();
+}
 
 const { createApp } = require('./app');
 
