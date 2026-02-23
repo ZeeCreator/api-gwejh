@@ -1,63 +1,47 @@
 # Otakudesu Scraper API
 
-Node.js API Scraper for otakudesu.fit with security features and clean architecture.
+Node.js API Scraper for otakudesu.fit dengan security features, siap deploy ke Vercel.
 
-## Features
+## ✨ Features
 
-- ✅ **Rotating User-Agent** - 10+ different browser user agents
-- ✅ **Random Delay** - 1-3 seconds between requests
-- ✅ **Axios Retry** - Automatic retry with exponential backoff
-- ✅ **Proxy Support** - Optional proxy configuration
-- ✅ **AES Encryption** - AES-256 encrypted responses
-- ✅ **Helmet Security** - Comprehensive HTTP headers security
-- ✅ **Rate Limiting** - Configurable request rate limiting
-- ✅ **Environment Config** - dotenv configuration
-- ✅ **Request Logging** - Morgan HTTP request logger
-- ✅ **Clean Architecture** - Separated concerns (routes, controllers, services, utils)
+- ✅ **Rotating User-Agent** - 5+ browser user agents
+- ✅ **Random Delay** - 1-2 detik antar request
+- ✅ **Axios Retry** - Auto retry dengan exponential backoff
+- ✅ **AES Encryption** - Optional AES-256 encrypted responses
+- ✅ **Helmet Security** - Comprehensive HTTP headers
+- ✅ **Rate Limiting** - 100 requests/15 minutes
+- ✅ **Vercel Ready** - Serverless deployment support
+- ✅ **Clean Code** - Self-contained dalam satu file untuk Vercel
 
-## Installation
+## 🚀 Quick Start
 
+### Install
 ```bash
 npm install
 ```
 
-## Deployment
-
-### Deploy to Vercel
-
-1. Install Vercel CLI:
-```bash
-npm install -g vercel
-```
-
-2. Login to Vercel:
-```bash
-vercel login
-```
-
-3. Deploy:
-```bash
-vercel --prod
-```
-
-4. Set environment variables in Vercel dashboard:
-- `ENCRYPTION_KEY` (32 characters)
-- `USE_ENCRYPTION` (true/false)
-- `PORT` (3000)
-- Other variables from `.env.example`
-
 ### Local Development
-
 ```bash
 npm run dev
 ```
 
-### Production (Local)
+### Deploy to Vercel
 ```bash
-npm start
+vercel --prod
 ```
 
-## Configuration
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | API info |
+| GET | `/api/health` | Health check |
+| GET | `/api/ongoing` | Ongoing anime list |
+| GET | `/api/completed` | Completed anime list |
+| GET | `/api/series?page=1` | All series (paginated) |
+| GET | `/api/search?q=naruto` | Search anime |
+| GET | `/api/anime/:id` | Anime details |
+| GET | `/api/nonton/:slug` | Episode stream URL |
 
 1. Copy `.env.example` to `.env`:
 ```bash
