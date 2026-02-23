@@ -5,13 +5,17 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "build": "echo 'Building for Vercel...'",
+    "vercel-build": "echo 'Vercel build complete'"
   },
   "keywords": [
     "scraper",
     "otakudesu",
     "anime",
-    "api"
+    "api",
+    "vercel",
+    "serverless"
   ],
   "author": "",
   "license": "ISC",
@@ -26,6 +30,10 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "vercel": "^32.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

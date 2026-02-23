@@ -21,6 +21,42 @@ Node.js API Scraper for otakudesu.fit with security features and clean architect
 npm install
 ```
 
+## Deployment
+
+### Deploy to Vercel
+
+1. Install Vercel CLI:
+```bash
+npm install -g vercel
+```
+
+2. Login to Vercel:
+```bash
+vercel login
+```
+
+3. Deploy:
+```bash
+vercel --prod
+```
+
+4. Set environment variables in Vercel dashboard:
+- `ENCRYPTION_KEY` (32 characters)
+- `USE_ENCRYPTION` (true/false)
+- `PORT` (3000)
+- Other variables from `.env.example`
+
+### Local Development
+
+```bash
+npm run dev
+```
+
+### Production (Local)
+```bash
+npm start
+```
+
 ## Configuration
 
 1. Copy `.env.example` to `.env`:
@@ -189,13 +225,33 @@ const data = await response.json();
 const decrypted = decrypt(data.payload, 'your-32-character-secret-key-here');
 ```
 
+## Environment Variables
+
+Set these in Vercel Dashboard > Project Settings > Environment Variables:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `ENCRYPTION_KEY` | Yes* | 32-character secret key for AES encryption |
+| `USE_ENCRYPTION` | No | Set to `true` for encrypted responses (default: false) |
+| `PORT` | No | Server port (default: 3000) |
+| `NODE_ENV` | No | Environment (development/production) |
+| `RATE_LIMIT_WINDOW_MS` | No | Rate limit window in ms (default: 900000) |
+| `RATE_LIMIT_MAX_REQUESTS` | No | Max requests per window (default: 100) |
+| `PROXY_ENABLED` | No | Enable proxy support (default: false) |
+| `REQUEST_TIMEOUT` | No | Request timeout in ms (default: 30000) |
+| `MAX_RETRIES` | No | Max retry attempts (default: 3) |
+
+*Required only if USE_ENCRYPTION=true
+
 ## Project Structure
 
 ```
 animw/
+├── api/
+│   └── index.js              # Vercel serverless entry point
 ├── src/
-│   ├── app.js              # Express app configuration
-│   ├── server.js           # Server entry point
+│   ├── app.js                # Express app configuration
+│   ├── server.js             # Server entry point (local)
 │   ├── controllers/
 │   │   └── scraperController.js
 │   ├── routes/
@@ -208,10 +264,12 @@ animw/
 │       ├── logger.js
 │       ├── proxy.js
 │       └── userAgent.js
-├── logs/                   # Auto-generated log files
+├── logs/                     # Auto-generated log files (local only)
 ├── .env.example
 ├── .gitignore
-└── package.json
+├── vercel.json               # Vercel configuration
+├── package.json
+└── README.md
 ```
 
 ## Security Features
